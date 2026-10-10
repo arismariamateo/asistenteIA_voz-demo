@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recepcionista Virtual para Médicos | Demo en Vivo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased font-sans flex flex-col min-h-screen justify-between p-6">
+
+  <!-- Header -->
+  <header class="max-w-4xl mx-auto w-full flex justify-between items-center py-4">
+    <span class="font-bold text-lg tracking-tight text-emerald-400">MedVoice AI</span>
+    <a href="https://wa.me/TU_NUMERO?text=Hola,%20quiero%20información%20del%20asistente" target="_blank" class="text-sm bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-2 rounded-full transition">Escribir por WhatsApp</a>
+  </header>
+
+  <!-- Hero & Demo -->
+  <main class="max-w-3xl mx-auto w-full text-center my-auto py-10 space-y-6">
+    <span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold bg-emerald-950/60 border border-emerald-800/60 px-3 py-1 rounded-full">Para consultorios independientes</span>
+    
+    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+      Tu consultorio atendiendo pacientes 24/7 sin contratar personal extra.
+    </h1>
+    
+    <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
+      Responde dudas, filtra pacientes y agenda consultas automáticamente en tu calendario.
+    </p>
+
+    <!-- Contenedor del Botón Interactivo de Voz -->
+    <div class="bg-slate-800/70 border border-slate-700 p-8 rounded-2xl shadow-xl max-w-md mx-auto space-y-4">
+      <p class="text-sm font-medium text-slate-300">Presiona el botón y habla con la demo:</p>
+      
+      <!-- Botón de disparo de la llamada -->
+      <button id="call-btn" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-6 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+        <span>Probar llamada ahora</span>
+      </button>
+
+      <p class="text-xs text-slate-400">Pruébale diciendo: <em>"Hola, quiero agendar una consulta médica para el lunes."</em></p>
+    </div>
+
+    <!-- CTA Directo -->
+    <div class="pt-4">
+      <a href="https://wa.me/51916691814?text=Hola,%20probé%20la%20demo%20y%20quiero%20cotizar" target="_blank" class="text-slate-300 hover:text-white underline underline-offset-4 text-sm">¿Te interesa implementarlo en tu consulta? Hablemos directamente</a>
+    </div>
+  </main>
+
+  <footer class="text-center text-xs text-slate-500 py-4">
+    Infraestructura autónoma en la nube. Operatividad continua.
+  </footer>
+
+  <!-- SDK Web Oficial de Vapi -->
+  
+
+  <script type="module">
+    import Vapi from "https://esm.sh/@vapi-ai/web";
+
+    const PUBLIC_KEY = "3c04bc47-e0ee-4397-af42-8cbcbcbe63c1";
+    const ASSISTANT_ID = "92c4754c-033f-4400-b516-f802ba660191";
+
+    const vapi = new Vapi(PUBLIC_KEY);
+    const callBtn = document.getElementById("call-btn");
+    let isCalling = false;
+
+    // Actualización de estado en la interfaz
+    vapi.on("call-start", () => {
+      console.log("Llamada conectada");
+      isCalling = true;
+      callBtn.innerText = "🔴 Finalizar conversación";
+      callBtn.classList.replace("bg-emerald-500", "bg-rose-600");
+      callBtn.classList.replace("hover:bg-emerald-400", "hover:bg-rose-500");
+      callBtn.classList.replace("text-slate-950", "text-white");
+    });
+
+    vapi.on("call-end", () => {
+      console.log("Llamada finalizada");
+      isCalling = false;
+      callBtn.innerHTML = `
+        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path>
+        </svg> Probar llamada ahora`;
+      callBtn.classList.replace("bg-rose-600", "bg-emerald-500");
+      callBtn.classList.replace("hover:bg-rose-500", "hover:bg-emerald-400");
+      callBtn.classList.replace("text-white", "text-slate-950");
+    });
+
+    vapi.on("error", (err) => {
+      console.error("Error Vapi:", err);
+      isCalling = false;
+    });
+
+    // Disparador del botón
+    callBtn.addEventListener("click", async () => {
+      console.log("Botón presionado, estado actual:", isCalling);
+      if (!isCalling) {
+        try {
+          callBtn.innerText = "Conectando...";
+          await vapi.start(ASSISTANT_ID);
+        } catch (err) {
+          console.error("Fallo al conectar llamada:", err);
+          callBtn.innerText = "Probar llamada ahora";
+        }
+      } else {
+        vapi.stop();
+      }
+    });
+  </script>
+ 
+</body>
+</html>
