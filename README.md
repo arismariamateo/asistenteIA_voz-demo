@@ -6,7 +6,7 @@ Solución integral de asistencia por voz con Inteligencia Artificial diseñada p
 
 ## 🚀 Demo en Vivo
 Puedes probar la experiencia de voz interactiva directamente en la web:
-👉 **[Ver Demo en GitHub Pages](https://TU_USUARIO.github.io/NOMBRE_DEL_REPOSITORIO/)**
+👉 **[Ver Demo en GitHub Pages](https://arismariamateo.github.io/asistenteIA_voz-demo/)**
 
 ---
 
@@ -48,4 +48,4 @@ El sistema opera bajo un flujo desacoplado y en tiempo real:
 
 1. Clona el repositorio:
    ```bash
-   git clone [https://github.com/TU_USUARIO/NOMBRE_DEL_REPOSITORIO.git](https://github.com/TU_USUARIO/NOMBRE_DEL_REPOSITORIO.git)
+   git clone [https://github.com/arismariamateo/asistenteIA_voz-demo.git](https://github.com/arismariamateo/asistenteIA_voz-demo.git)
